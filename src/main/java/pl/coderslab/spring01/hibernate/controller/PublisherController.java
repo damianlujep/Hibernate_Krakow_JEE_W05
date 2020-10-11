@@ -15,6 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/publisher", produces = "text/html; charset=UTF-8")
+@ResponseBody
 public class PublisherController {
     private final PublisherDao publisherDao;
 
@@ -24,7 +25,6 @@ public class PublisherController {
     }
 
     @GetMapping("/add")
-    @ResponseBody
     public String addPublisher() {
         Publisher publisher = new Publisher();
         publisher.setName("Publisher name");
@@ -34,14 +34,14 @@ public class PublisherController {
     }
 
     @GetMapping("/get/{id}")
-    @ResponseBody
+    @Transactional
     public String getPublisher(@PathVariable long id) {
         Publisher publisher = publisherDao.findById(id);
+        publisherDao.readBooks(publisher);
         return publisher.toString();
     }
 
     @GetMapping("/books/{id}")
-    @ResponseBody
     @Transactional
     public String getAllBooksByPublisherId(@PathVariable long id) {
         Publisher publisher = publisherDao.findById(id);
@@ -52,7 +52,6 @@ public class PublisherController {
     }
 
     @GetMapping("/update/{id}/{publisherName}")
-    @ResponseBody
     public String updatePublisher(@PathVariable long id, @PathVariable String publisherName) {
         Publisher publisher = publisherDao.findById(id);
         publisher.setName(publisherName);
@@ -61,10 +60,21 @@ public class PublisherController {
     }
 
     @GetMapping("/delete/{id}")
-    @ResponseBody
     public String deletePublisher(@PathVariable long id) {
         Publisher publisher = publisherDao.findById(id);
         publisherDao.delete(publisher);
         return "deleted";
     }
+    @GetMapping("/all")
+    @Transactional
+    public String getAll(){
+        List<Publisher> all = publisherDao.getAll();
+        for (Publisher p : all){
+            publisherDao.readBooks(p);
+        }
+
+        return  all.toString();
+    }
+
+
 }

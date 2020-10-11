@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@ResponseBody
 @RequestMapping(value = "/book" , produces = "text/html; charset=UTF-8")
 public class BookController {
     private final BookDao bookDao;
@@ -33,7 +34,6 @@ public class BookController {
     }
 
     @GetMapping("/add")
-    @ResponseBody
     public String addBook() {
         Book book = new Book();
         book.setTitle("Thinking in Java");
@@ -44,7 +44,6 @@ public class BookController {
     }
 
     @GetMapping("/addbookwp")
-    @ResponseBody
     public String addBookWithPublisher(){
         Publisher publisher = new Publisher();
         publisher.setName("Helion");
@@ -60,7 +59,6 @@ public class BookController {
     }
 
     @GetMapping("/addbookath")
-    @ResponseBody
     public String addBookWithAuthors(){
         List<Author> authorList = new ArrayList<>();
         Author author1 = authorDao.findById(1);
@@ -78,7 +76,6 @@ public class BookController {
     }
 
     @GetMapping("/addanotherwp")
-    @ResponseBody
     public String addAnotherBookWithPublisher(){
         Publisher publisher = publisherDao.findById(1L);
 
@@ -93,7 +90,6 @@ public class BookController {
     }
 
     @GetMapping("/get/{id}")
-    @ResponseBody
     @Transactional
     public String getBook(@PathVariable long id) {
         Book book = bookDao.findById(id);
@@ -103,7 +99,6 @@ public class BookController {
     }
 
     @GetMapping("/update/{id}/{title}")
-    @ResponseBody
     public String updateBook(@PathVariable long id, @PathVariable String title ) {
         Book book = bookDao.findById(id);
         book.setTitle(title);
@@ -112,13 +107,67 @@ public class BookController {
     }
 
     @GetMapping("/delete/{id}")
-    @ResponseBody
     public String deleteBook(@PathVariable long id) {
         Book book = bookDao.findById(id);
         bookDao.delete(book);
         return "deleted";
     }
 
+    @GetMapping("/all")
+    @Transactional
+    public String getAll(){
+        List<Book> books = bookDao.findAll();
+        for (Book b: books){
+            Hibernate.initialize(b.getPublisher());
+            Hibernate.initialize(b.getAuthors());
+        }
+
+        return books.toString();
+    }
+
+    @GetMapping("/byminrating/{minRating}")
+    @Transactional
+    public String getAllByRating(@PathVariable int minRating){
+        List<Book> books = bookDao.findByRatingGT(minRating);
+        for (Book b: books){
+            Hibernate.initialize(b.getPublisher());
+            Hibernate.initialize(b.getAuthors());
+        }
+        return books.toString();
+    }
+
+    @GetMapping("/allwithpublsh")
+    @Transactional
+    public String getAllWithPublisher(){
+        List<Book> books = bookDao.findAllWithPublisher();
+        for (Book b: books){
+            Hibernate.initialize(b.getPublisher());
+            Hibernate.initialize(b.getAuthors());
+        }
+        return books.toString();
+    }
+
+    @GetMapping("/allwithpublsh/{publisherId}")
+    @Transactional
+    public String getAllWithGivenPublisher(@PathVariable long publisherId){
+        List<Book> books = bookDao.findAllWithPublisherId(publisherId);
+        for (Book b: books){
+            Hibernate.initialize(b.getPublisher());
+            Hibernate.initialize(b.getAuthors());
+        }
+        return books.toString();
+    }
+
+    @GetMapping("/allwithauthor/{authorId}")
+    @Transactional
+    public String getAllWithAuthorId(@PathVariable long authorId){
+        List<Book> books = bookDao.findAllWitAuthorId(authorId);
+        for (Book b: books){
+            Hibernate.initialize(b.getPublisher());
+            Hibernate.initialize(b.getAuthors());
+        }
+        return books.toString();
+    }
 
 
 }

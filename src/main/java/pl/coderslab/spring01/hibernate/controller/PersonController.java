@@ -1,10 +1,7 @@
 package pl.coderslab.spring01.hibernate.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.spring01.hibernate.controller.entity.Person;
 import pl.coderslab.spring01.hibernate.controller.entity.PersonDetails;
 import pl.coderslab.spring01.hibernate.dao.PersonDao;

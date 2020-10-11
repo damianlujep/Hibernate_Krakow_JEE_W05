@@ -80,5 +80,7 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", authors= " + authors +
                 '}';
+
+//        TODO add Publishers
     }
 }

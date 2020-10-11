@@ -38,6 +38,8 @@ public class PersonDetailsController {
 
         return"Details to person " + details.getFirstName() + " " + details.getLastName() +
                 "have been added";
+
+//        TODO
     }
 
     @GetMapping("/get/{id}")
@@ -45,17 +47,17 @@ public class PersonDetailsController {
         PersonDetails details = personDetailsDao.findById(id);
         return details.toString();
     }
-//
-//    @GetMapping("/update/{id}/{login}/{password}/{email}")
-//    public String updatePerson (@PathVariable long id, @PathVariable String login, @PathVariable String password, @PathVariable String email){
-//        Person person = personDao.findById(id);
-//        person.setEmail(email);
-//        person.setPassword(password);
-//        person.setLogin(login);
-//        personDao.update(person);
-//        return person.toString();
-//    }
-//
+
+    @GetMapping("/update/{id}/{firstName}/{lastName}/{streetName}")
+    public String updatePerson (@PathVariable long id, @PathVariable String firstName, @PathVariable String lastName, @PathVariable String streetName){
+        PersonDetails details = personDetailsDao.findById(id);
+        details.setFirstName(firstName);
+        details.setLastName(lastName);
+        details.setStreet(streetName);
+        personDetailsDao.update(details);
+        return details.toString();
+    }
+
     @GetMapping("/delete/{id}")
     public String deletePersonDetails (@PathVariable long id){
         PersonDetails details = personDetailsDao.findById(id);

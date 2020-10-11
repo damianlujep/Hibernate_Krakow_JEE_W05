@@ -1,7 +1,6 @@
 package pl.coderslab.spring01.hibernate.dao;
 
 import org.springframework.stereotype.Repository;
-import pl.coderslab.spring01.hibernate.controller.entity.Person;
 import pl.coderslab.spring01.hibernate.controller.entity.PersonDetails;
 
 import javax.persistence.EntityManager;

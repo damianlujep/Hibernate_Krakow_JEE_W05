@@ -1,22 +1,16 @@
-package pl.coderslab.spring01.hibernate.controller.entity;
+package pl.coderslab.spring01.hibernate.model;
 
 import pl.coderslab.spring01.hibernate.controller.entity.PersonDetails;
 
-import javax.persistence.*;
+import javax.persistence.OneToOne;
 
-@Entity
-@Table(name = "people")
-public class Person {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Person2 {
     private long id;
     private String login;
     private String password;
     private String email;
-    @OneToOne(mappedBy = "person")
-    private PersonDetails details;
 
-    public Person() {
+    public Person2() {
 
     }
 
@@ -52,22 +46,13 @@ public class Person {
         this.email = email;
     }
 
-    public PersonDetails getDetails() {
-        return details;
-    }
-
-    public void setDetails(PersonDetails details) {
-        this.details = details;
-    }
-
     @Override
     public String toString() {
-        return "Person{" +
+        return "Person2{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", details=" + details +
                 '}';
     }
 }
