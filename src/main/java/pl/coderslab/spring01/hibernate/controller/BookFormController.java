@@ -3,12 +3,15 @@ package pl.coderslab.spring01.hibernate.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.spring01.hibernate.controller.entity.Book;
 import pl.coderslab.spring01.hibernate.controller.entity.Publisher;
 import pl.coderslab.spring01.hibernate.dao.AuthorDao;
 import pl.coderslab.spring01.hibernate.dao.BookDao;
 import pl.coderslab.spring01.hibernate.dao.PublisherDao;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -51,10 +54,14 @@ public class BookFormController {
 
 
     @PostMapping("/addform2")
-    public String addBookAndShowList(@ModelAttribute Book book, Model m){
+    public String addBookAndShowList(@ModelAttribute("book") @Valid Book book, BindingResult result, Model m){
+        if (result.hasErrors()){
+            return "book/add-form";
+        }
+
         this.bookDao.saveBook(book);
         m.addAttribute("book",book);
-        return "redirect:list-books";
+        return "redirect:list";
     }
 
 //    @GetMapping("/editbook/{id}")

@@ -1,6 +1,12 @@
 package pl.coderslab.spring01.hibernate.controller.entity;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +16,22 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Size(min = 5)
     private String title;
+    @Range(min = 1 , max = 10)
     private int rating;
+    @Size(max = 600)
     private String description;
     @ManyToOne
+    @NotNull(message = "Oh, Dear, this must NOT be null")
     private Publisher publisher;
+    @Min(1)
+    private int pages;
     @ManyToMany
+//    @NotEmpty
     private List<Author> authors =  new ArrayList<>();
+    @ManyToOne
+    private Category category;
 
     public Book(){
 
@@ -67,8 +82,26 @@ public class Book {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public Book setAuthors(List<Author> authors) {
         this.authors = authors;
+        return this;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Book setCategory(Category category) {
+        this.category = category;
+        return this;
     }
 
     @Override
@@ -78,9 +111,10 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", rating=" + rating +
                 ", description='" + description + '\'' +
-                ", authors= " + authors +
+                ", publisher=" + publisher +
+                ", pages=" + pages +
+                ", authors=" + authors +
+                ",category= " + category+
                 '}';
-
-//        TODO add Publishers
     }
 }

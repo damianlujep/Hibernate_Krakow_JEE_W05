@@ -1,6 +1,10 @@
 package pl.coderslab.spring01.hibernate.controller.entity;
 
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.REGON;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +14,12 @@ public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank
     private String name;
+    @NIP
+    private String nip;
+    @REGON
+    private String regon;
     @OneToMany(mappedBy = "publisher")
     private List<Book> books = new ArrayList<>();
 
@@ -42,8 +51,25 @@ public class Publisher {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public Publisher setBooks(List<Book> books) {
         this.books = books;
+        return this;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getRegon() {
+        return regon;
+    }
+
+    public void setRegon(String regon) {
+        this.regon = regon;
     }
 
     @Override
@@ -51,6 +77,9 @@ public class Publisher {
         return "Publisher{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", nip=" + nip +
+                ", regon=" + regon +
+//                ", books=" + books +
                 '}';
     }
 }
